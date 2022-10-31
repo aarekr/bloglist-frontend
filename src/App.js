@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
+import SuccessNotification from './components/SuccessNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -10,6 +11,7 @@ const App = () => {
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogURL, setNewBlogURL] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -39,7 +41,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong credentials')
+      setErrorMessage('wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -84,7 +86,6 @@ const App = () => {
 
   const addBlog = (event) => {
     event.preventDefault()
-    console.log('adding a blog')
     const newItem = {
       title: newBlogTitle,
       author: newBlogAuthor,
@@ -95,10 +96,14 @@ const App = () => {
       .create(newItem)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        setSuccessMessage(`a new blog ${newBlogTitle} by ${newBlogAuthor} added`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
+        setNewBlogTitle('')
+        setNewBlogAuthor('')
+        setNewBlogURL('')
       })
-    setNewBlogTitle('')
-    setNewBlogAuthor('')
-    setNewBlogURL('')
   }
 
   const handleBlogTitleChange = (event) => {
@@ -114,7 +119,8 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
-      <Notification message={errorMessage} />
+      <ErrorNotification message={errorMessage} />
+      <SuccessNotification message={successMessage} />
       {user === null
         ? loginForm()
         : <div><p>{user.name} logged in 
