@@ -4,6 +4,7 @@ import ErrorNotification from './components/ErrorNotification'
 import SuccessNotification from './components/SuccessNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import UusiBlogForm from './components/UusiBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -15,6 +16,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [blogFormVisible, setBlogFormVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs( blogs ))  
@@ -53,7 +55,7 @@ const App = () => {
   const handleLogout = async (event) => {
     event.preventDefault()
     setUser(null)
-    window.localStorage.clear()
+    //window.localStorage.clear()
   }
 
   const loginForm = () => (
@@ -71,18 +73,30 @@ const App = () => {
     </form>      
   )
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <h2>create new</h2>
-      <div>title: <input value={newBlogTitle} onChange={handleBlogTitleChange} /></div>
-      <div>author: <input value={newBlogAuthor} onChange={handleBlogAuthorChange} /></div>
-      <div>url: <input value={newBlogURL} onChange={handleBlogURLChange} /></div>
-      <div><button type="submit">create</button></div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </form>
-  )
+  const uusiBlogForm = () => {
+    const hideWhenVisible = { display: blogFormVisible ? 'none' : '' }
+    const showWhenVisible = { display: blogFormVisible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setBlogFormVisible(true)}>new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <UusiBlogForm handleSubmit={addBlog} 
+            newBlogTitle={newBlogTitle} handleBlogTitleChange={handleBlogTitleChange}
+            newBlogAuthor={newBlogAuthor} handleBlogAuthorChange={handleBlogAuthorChange}
+            newBlogURL={newBlogURL} handleBlogURLChange={handleBlogURLChange} />
+          <button onClick={() => setBlogFormVisible(false)}>cancel</button>
+        </div>
+        <div>
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+          )}
+        </div>
+      </div>
+    )
+  }
 
   const addBlog = (event) => {
     event.preventDefault()
@@ -104,6 +118,7 @@ const App = () => {
         setNewBlogAuthor('')
         setNewBlogURL('')
       })
+    setBlogFormVisible(false)
   }
 
   const handleBlogTitleChange = (event) => {
@@ -125,7 +140,7 @@ const App = () => {
         ? loginForm()
         : <div><p>{user.name} logged in 
                <button onClick={handleLogout}>logout</button></p><hr />
-            {blogForm()}
+            {uusiBlogForm()}
           </div>
       }
     </div>
