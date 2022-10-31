@@ -35,6 +35,11 @@ const App = () => {
     }
   }
 
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    setUser(null)
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h2>log in to application</h2>
@@ -75,7 +80,10 @@ const App = () => {
       <Notification message={errorMessage} />
       {user === null
         ? loginForm()
-        : <div><p>{user.name} logged in</p>{blogForm()}</div>
+        : <div><p>{user.name} logged in 
+               <button onClick={handleLogout}>logout</button></p><hr />
+            {blogForm()}
+          </div>
       }
     </div>
   )
