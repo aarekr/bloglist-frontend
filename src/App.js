@@ -17,7 +17,7 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs( blogs ))  
+    blogService.getAll().then(blogs => setBlogs( blogs ))
   }, [])
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user)) 
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -53,7 +53,7 @@ const App = () => {
   const handleLogout = async (event) => {
     event.preventDefault()
     setUser(null)
-    //window.localStorage.clear()
+    window.localStorage.clear()
   }
 
   const addBlog = (newItem) => {
@@ -87,9 +87,9 @@ const App = () => {
         </Togglable> :
         <div>
           <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
-            <Togglable buttonLabel="new blog" ref={blogFormRef}>
-              <UusiBlogForm createBlog={addBlog} />
-            </Togglable><hr />
+          <Togglable buttonLabel="new blog" ref={blogFormRef}>
+            <UusiBlogForm createBlog={addBlog} />
+          </Togglable><hr />
           <div>
             {blogs
               .sort((a,b) => a.likes > b.likes ? -1 : 1)
