@@ -1,22 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import ErrorNotification from './components/ErrorNotification'
 import SuccessNotification from './components/SuccessNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import UusiBlogForm from './components/UusiBlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlogTitle, setNewBlogTitle] = useState('')
-  const [newBlogAuthor, setNewBlogAuthor] = useState('')
-  const [newBlogURL, setNewBlogURL] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [blogFormVisible, setBlogFormVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs( blogs ))  
@@ -73,63 +70,21 @@ const App = () => {
     </form>      
   )
 
-  const uusiBlogForm = () => {
-    const hideWhenVisible = { display: blogFormVisible ? 'none' : '' }
-    const showWhenVisible = { display: blogFormVisible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setBlogFormVisible(true)}>new blog</button>
-        </div>
-        <div style={showWhenVisible}>
-          <UusiBlogForm handleSubmit={addBlog} 
-            newBlogTitle={newBlogTitle} handleBlogTitleChange={handleBlogTitleChange}
-            newBlogAuthor={newBlogAuthor} handleBlogAuthorChange={handleBlogAuthorChange}
-            newBlogURL={newBlogURL} handleBlogURLChange={handleBlogURLChange} />
-          <button onClick={() => setBlogFormVisible(false)}>cancel</button>
-        </div>
-        <div>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  const addBlog = (event) => {
-    event.preventDefault()
-    const newItem = {
-      title: newBlogTitle,
-      author: newBlogAuthor,
-      url: newBlogURL,
-      likes: 0
-    }
+  const addBlog = (newItem) => {
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(newItem)
       .then(returnedBlog => {
+        console.log('App addBlog returnedBlog:', returnedBlog)
         setBlogs(blogs.concat(returnedBlog))
-        setSuccessMessage(`a new blog ${newBlogTitle} by ${newBlogAuthor} added`)
+        setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
         setTimeout(() => {
           setSuccessMessage(null)
         }, 5000)
-        setNewBlogTitle('')
-        setNewBlogAuthor('')
-        setNewBlogURL('')
       })
-    setBlogFormVisible(false)
   }
 
-  const handleBlogTitleChange = (event) => {
-    setNewBlogTitle(event.target.value)
-  }
-  const handleBlogAuthorChange = (event) => {
-    setNewBlogAuthor(event.target.value)
-  }
-  const handleBlogURLChange = (event) => {
-    setNewBlogURL(event.target.value)
-  }
+  const blogFormRef = useRef()
 
   return (
     <div>
@@ -138,9 +93,16 @@ const App = () => {
       <SuccessNotification message={successMessage} />
       {user === null
         ? loginForm()
-        : <div><p>{user.name} logged in 
-               <button onClick={handleLogout}>logout</button></p><hr />
-            {uusiBlogForm()}
+        : <div>
+            <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
+              <Togglable buttonLabel="new blog" ref={blogFormRef}>
+                <UusiBlogForm createBlog={addBlog} />
+              </Togglable><hr />
+            <div>
+              {blogs.map(blog =>
+                <Blog key={blog.id} blog={blog} />
+              )}
+            </div>
           </div>
       }
     </div>
