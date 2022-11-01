@@ -5,6 +5,7 @@ import SuccessNotification from './components/SuccessNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import UusiBlogForm from './components/UusiBlogForm'
+import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 
 const App = () => {
@@ -34,7 +35,7 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user)) 
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user)) 
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -54,21 +55,6 @@ const App = () => {
     setUser(null)
     //window.localStorage.clear()
   }
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <h2>log in to application</h2>
-      <div>username
-          <input type="text" value={username} name="Username"
-          onChange={({ target }) => setUsername(target.value)} />
-      </div>
-      <div>password
-          <input type="password" value={password} name="Password"
-          onChange={({ target }) => setPassword(target.value)} />
-      </div>
-      <button type="submit">login</button>
-    </form>      
-  )
 
   const addBlog = (newItem) => {
     blogFormRef.current.toggleVisibility()
@@ -91,20 +77,26 @@ const App = () => {
       <h1>Blogs</h1>
       <ErrorNotification message={errorMessage} />
       <SuccessNotification message={successMessage} />
-      {user === null
-        ? loginForm()
-        : <div>
-            <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
-              <Togglable buttonLabel="new blog" ref={blogFormRef}>
-                <UusiBlogForm createBlog={addBlog} />
-              </Togglable><hr />
-            <div>
-              {blogs
-                .sort((a,b) => a.likes > b.likes ? -1 : 1)
-                .map(blog => <Blog key={blog.id} blog={blog} />)
-              }
-            </div>
+      {user === null ?
+        <Togglable buttonLabel='login'>
+          <LoginForm
+            username={username} password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}/>
+        </Togglable> :
+        <div>
+          <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
+            <Togglable buttonLabel="new blog" ref={blogFormRef}>
+              <UusiBlogForm createBlog={addBlog} />
+            </Togglable><hr />
+          <div>
+            {blogs
+              .sort((a,b) => a.likes > b.likes ? -1 : 1)
+              .map(blog => <Blog key={blog.id} blog={blog} />)
+            }
           </div>
+        </div>
       }
     </div>
   )
