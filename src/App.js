@@ -48,6 +48,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     }
+    console.log('kirjautuneena nyt:', username)
   }
 
   const handleLogout = async (event) => {
@@ -68,6 +69,19 @@ const App = () => {
           setSuccessMessage(null)
         }, 5000)
       })
+  }
+
+  const removeBlog = (id, blog_creator_id, title, author) => {
+    let poistetaankoBlogi = window.confirm(`Remove blog ${title} by ${author}`)
+    if (poistetaankoBlogi === true) {
+      blogService
+        .remove(id)
+        .then(poistettuBlog => {
+          setSuccessMessage('Deleted blog')
+          setTimeout(() => { setSuccessMessage(null) }, 5000)
+        })
+    }
+    blogService.getAll().then(blogs => setBlogs( blogs ))
   }
 
   const blogFormRef = useRef()
@@ -93,7 +107,9 @@ const App = () => {
           <div>
             {blogs
               .sort((a,b) => a.likes > b.likes ? -1 : 1)
-              .map(blog => <Blog key={blog.id} blog={blog} />)
+              .map(blog =>
+                <Blog key={blog.id} blog={blog} kirjautunut={user.username}
+                  removeBlog={removeBlog} />)
             }
           </div>
         </div>

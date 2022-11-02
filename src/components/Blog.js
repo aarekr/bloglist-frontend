@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, kirjautunut, removeBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -8,6 +8,9 @@ const Blog = ({ blog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
+  }
+  const addLike = () => {
+    console.log('lisätään like')
   }
 
   if (showDetails === false) {
@@ -18,14 +21,25 @@ const Blog = ({ blog }) => {
       </div>
     )
   }
-  else if (showDetails === true){
+  else if (showDetails === true && kirjautunut === blog.user.username){
     return(
-      <div style={blogStyle}>
+      <div style={blogStyle} className="togglableContent">
         <div>{blog.title} <button onClick={() => setShowDetails(false)}>hide</button></div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes} <button>like</button></div>
+        <div>likes {blog.likes} <button onClick={() => addLike()}>like</button></div>
         <div>{blog.author}</div>
-        <div><button>remove</button></div>
+        <div><button onClick={() =>
+          removeBlog(blog.id, blog.user.username, blog.title, blog.author)}>remove</button></div>
+      </div>
+    )
+  }
+  else if (showDetails === true && kirjautunut !== blog.user.username){
+    return(
+      <div style={blogStyle} className="togglableContent">
+        <div>{blog.title} <button onClick={() => setShowDetails(false)}>hide</button></div>
+        <div>{blog.url}</div>
+        <div>likes {blog.likes} <button onClick={() => addLike()}>like</button></div>
+        <div>{blog.author}</div>
       </div>
     )
   }
