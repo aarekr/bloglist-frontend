@@ -23,31 +23,36 @@ describe('Blog app', function() {
       cy.get('#login-button').click()
       cy.contains('Tauno Testaaja logged in')
     })
+
     it('fails with wrong credentials', function() {
       cy.contains('login').click()
       cy.get('#username').type('tauno')
       cy.get('#password').type('väärä')
       cy.get('#login-button').click()
       cy.contains('wrong username or password')
+      cy.get('.error')
+        .should('contain', 'wrong username or password')
+        .and('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('have.css', 'border-style', 'solid')
+      cy.get('html').should('not.contain', 'Tauno Testaaja logged in')
     })
   })
 
-/*
   describe('when logged in', function() {
     beforeEach(function() {
       cy.contains('login').click()
-      cy.get('#username').type('aare')
-      cy.get('#password').type('...)
+      cy.get('#username').type('tauno')
+      cy.get('#password').type('salasana')
       cy.get('#login-button').click()
     })
 
     it('a new blog can be created', function() {
       cy.contains('new blog').click()
-      cy.get('#title').type('a blog created by cypress')
-      cy.get('#author').type('Aare')
+      cy.get('#title').type('Tauno added a new blog')
+      cy.get('#author').type('Tauno')
       cy.get('#url').type('http://blogi')
       cy.get('#create-button').click()
-      cy.contains('a blog created by cypress')
+      cy.contains('Tauno added a new blog')
     })
-  })*/
+  })
 })
