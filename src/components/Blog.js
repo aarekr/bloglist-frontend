@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, kirjautunut, removeBlog }) => {
+const Blog = ({ blog, kirjautunut, removeBlog, addLike }) => {
   const [showDetails, setShowDetails] = useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -8,9 +8,6 @@ const Blog = ({ blog, kirjautunut, removeBlog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  }
-  const addLike = () => {
-    console.log('lisätään like')
   }
 
   if (showDetails === false) {

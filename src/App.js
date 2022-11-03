@@ -84,6 +84,10 @@ const App = () => {
     blogService.getAll().then(blogs => setBlogs( blogs ))
   }
 
+  const addLike = () => {
+    console.log('lisätään like')
+  }
+
   const blogFormRef = useRef()
 
   return (
@@ -109,7 +113,7 @@ const App = () => {
               .sort((a,b) => a.likes > b.likes ? -1 : 1)
               .map(blog =>
                 <Blog key={blog.id} blog={blog} kirjautunut={user.username}
-                  removeBlog={removeBlog} />)
+                  removeBlog={removeBlog} addLike={addLike} />)
             }
           </div>
         </div>
