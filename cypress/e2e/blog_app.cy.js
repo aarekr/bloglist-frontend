@@ -10,9 +10,11 @@ describe('Blog app', function() {
     cy.visit('http://localhost:3000')
   })
 
-  it('Login form is shown', function() {
-    cy.contains('Blogs')
-    cy.contains('login')
+  describe('Starting page', function() {
+    it('Login form is shown', function() {
+      cy.contains('Blogs')
+      cy.contains('login')
+    })
   })
 
   describe('Login', function() {
@@ -38,7 +40,7 @@ describe('Blog app', function() {
     })
   })
 
-  describe('when logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function() {
       cy.contains('login').click()
       cy.get('#username').type('tauno')
@@ -53,6 +55,25 @@ describe('Blog app', function() {
       cy.get('#url').type('http://blogi')
       cy.get('#create-button').click()
       cy.contains('Tauno added a new blog')
+    })
+    /*
+    describe('and a blog exists', function() {
+      beforeEach(function() {
+        cy.contains('new blog').click()
+        cy.get('input').type('another note cypress')
+        cy.contains('create').click()
+      })
+    })*/
+    
+    it('a new blog can be created and liked', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('Tauno added a new blog')
+      cy.get('#author').type('Tauno')
+      cy.get('#url').type('http://blogi')
+      cy.get('#create-button').click()
+      cy.contains('Tauno added a new blog')
+      cy.get('#view-button').click()
+      cy.get('#like-button').click()
     })
   })
 })
