@@ -23,7 +23,7 @@ const Blog = ({ blog, kirjautunut, removeBlog, addLike }) => {
       <div style={blogStyle} className="togglableContent">
         <div>{blog.title} <button onClick={() => setShowDetails(false)}>hide</button></div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes} <button onClick={() => addLike()}>like</button></div>
+        <div>likes {blog.likes} <button id='like-button' onClick={() => addLike(blog.id)}>like</button></div>
         <div>{blog.author}</div>
         <div><button onClick={() =>
           removeBlog(blog.id, blog.user.username, blog.title, blog.author)}>remove</button></div>
@@ -35,7 +35,7 @@ const Blog = ({ blog, kirjautunut, removeBlog, addLike }) => {
       <div style={blogStyle} className="togglableContent">
         <div>{blog.title} <button onClick={() => setShowDetails(false)}>hide</button></div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes} <button id='like-button' onClick={() => addLike()}>like</button></div>
+        <div>likes {blog.likes} <button id='like-button' onClick={() => addLike(blog.id)}>like</button></div>
         <div>{blog.author}</div>
       </div>
     )

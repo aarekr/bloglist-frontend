@@ -64,7 +64,7 @@ describe('Blog app', function() {
         cy.contains('create').click()
       })
     })*/
-    
+
     it('a new blog can be created and liked', function() {
       cy.contains('new blog').click()
       cy.get('#title').type('Tauno added a new blog')
@@ -74,6 +74,32 @@ describe('Blog app', function() {
       cy.contains('Tauno added a new blog')
       cy.get('#view-button').click()
       cy.get('#like-button').click()
+    })
+  })
+
+  describe('When logged in and two blogs created', function() {
+    beforeEach(function() {
+      cy.contains('login').click()
+      cy.get('#username').type('tauno')
+      cy.get('#password').type('salasana')
+      cy.get('#login-button').click()
+      cy.contains('new blog').click()
+      cy.get('#title').type('Tauno blog 1')
+      cy.get('#author').type('Tauno')
+      cy.get('#url').type('http://blogi')
+      cy.get('#create-button').click()
+      cy.contains('new blog').click()
+      cy.get('#title').type('Tauno blog 2')
+      cy.get('#author').type('Tauno')
+      cy.get('#url').type('http://blogi')
+      cy.get('#create-button').click()
+    })
+    
+    it('a blog can be deleted', function() {   // kesken
+      cy.contains('Tauno blog 1')
+      cy.contains('Tauno blog 2')
+      cy.get('#view-button').click()
+      cy.get('#view-button').click()
     })
   })
 })

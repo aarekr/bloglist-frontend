@@ -21,9 +21,8 @@ const UusiBlogForm = ({ createBlog }) => {
       title: newBlogTitle,
       author: newBlogAuthor,
       url: newBlogURL,
-      likes: 0
+      likes: Number(0)
     })
-    console.log('formin addBlog createBlog:', createBlog)
     setNewBlogTitle('')
     setNewBlogAuthor('')
     setNewBlogURL('')

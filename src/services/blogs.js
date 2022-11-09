@@ -23,7 +23,13 @@ const create = async newObject => {
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${ baseUrl } /${id}`, newObject) // huom! välilyönti _/id
+  console.log('blogs.js axios put newObject:', newObject)
+  const request = axios.put(`${ baseUrl }/${id}`, newObject) // huom! välilyönti _/id
+  return request.then(response => response.data)
+}
+
+const get_by_id = (id) => {  // mun oma
+  const request = axios.get(`${ baseUrl }/${id}`)
   return request.then(response => response.data)
 }
 
@@ -32,4 +38,4 @@ const remove = (id) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update, remove, setToken }
+export default { getAll, create, update, get_by_id, remove, setToken }

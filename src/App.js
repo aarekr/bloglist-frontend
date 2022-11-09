@@ -68,6 +68,7 @@ const App = () => {
         setTimeout(() => {
           setSuccessMessage(null)
         }, 5000)
+        blogService.getAll().then(blogs => setBlogs( blogs ))
       })
   }
 
@@ -79,13 +80,31 @@ const App = () => {
         .then(poistettuBlog => {
           setSuccessMessage('Deleted blog')
           setTimeout(() => { setSuccessMessage(null) }, 5000)
+          blogService.getAll().then(blogs => setBlogs( blogs ))
         })
     }
-    blogService.getAll().then(blogs => setBlogs( blogs ))
   }
 
-  const addLike = () => {
-    console.log('lisätään like')
+  const addLike = (id) => {
+    console.log('lisätään like id:', id)
+    blogService.get_by_id(id).then(blog => {
+      let muutettavaBlogi = {
+        author: blog.author,
+        id: blog.id,
+        likes: blog.likes + 1,
+        title: blog.title,
+        url: blog.url,
+        user: blog.user
+      }
+      console.log('muutettavaBlogi:', muutettavaBlogi)
+      blogService
+        .update(id, muutettavaBlogi)
+        .then(muutettuBlog => {
+          setSuccessMessage('You added a like')
+          setTimeout(() => { setSuccessMessage(null) }, 5000)
+          blogService.getAll().then(blogs => setBlogs( blogs ))
+        })
+    })
   }
 
   const blogFormRef = useRef()
