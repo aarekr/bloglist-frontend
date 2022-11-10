@@ -56,14 +56,6 @@ describe('Blog app', function() {
       cy.get('#create-button').click()
       cy.contains('Tauno added a new blog')
     })
-    /*
-    describe('and a blog exists', function() {
-      beforeEach(function() {
-        cy.contains('new blog').click()
-        cy.get('input').type('another note cypress')
-        cy.contains('create').click()
-      })
-    })*/
 
     it('a new blog can be created and liked', function() {
       cy.contains('new blog').click()
@@ -83,23 +75,24 @@ describe('Blog app', function() {
       cy.get('#username').type('tauno')
       cy.get('#password').type('salasana')
       cy.get('#login-button').click()
-      cy.contains('new blog').click()
+      cy.contains('new blog').click() // 1
       cy.get('#title').type('Tauno blog 1')
       cy.get('#author').type('Tauno')
       cy.get('#url').type('http://blogi')
       cy.get('#create-button').click()
-      cy.contains('new blog').click()
+      cy.contains('new blog').click() // 2
       cy.get('#title').type('Tauno blog 2')
       cy.get('#author').type('Tauno')
       cy.get('#url').type('http://blogi')
       cy.get('#create-button').click()
     })
     
-    it('a blog can be deleted', function() {   // kesken
+    it('a blog can be deleted', function() {
       cy.contains('Tauno blog 1')
       cy.contains('Tauno blog 2')
       cy.get('#view-button').click()
       cy.get('#view-button').click()
+      cy.get('#remove-button').click()
     })
   })
 })
