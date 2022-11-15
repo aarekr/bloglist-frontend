@@ -1,17 +1,20 @@
 import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import ErrorNotification from './components/ErrorNotification'
-import SuccessNotification from './components/SuccessNotification'
+//import SuccessNotification from './components/SuccessNotification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import UusiBlogForm from './components/UusiBlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import { useDispatch } from 'react-redux'
+import Notification from './components/Notification'
+//import ErrorNotification from './components/ErrorNotification'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
+  //const [errorMessage, setErrorMessage] = useState(null)
+  //const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -41,10 +44,10 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      //setErrorMessage('wrong username or password')
+      //setTimeout(() => { setErrorMessage(null) }, 5000)
+      dispatch({ type: 'WRONG' })
+      setTimeout(() => dispatch({ type: 'RESET' }), 3000)
       setUsername('')
       setPassword('')
     }
@@ -64,10 +67,10 @@ const App = () => {
       .then(returnedBlog => {
         console.log('App addBlog returnedBlog:', returnedBlog)
         setBlogs(blogs.concat(returnedBlog))
-        setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
+        //setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+        //setTimeout(() => { setSuccessMessage(null) }, 5000)
+        dispatch({ type: 'ADD' })
+        setTimeout(() => dispatch({ type: 'RESET' }), 3000)
         blogService.getAll().then(blogs => setBlogs( blogs ))
       })
   }
@@ -78,8 +81,10 @@ const App = () => {
       blogService
         .remove(id)
         .then(poistettuBlog => {
-          setSuccessMessage('Deleted blog')
-          setTimeout(() => { setSuccessMessage(null) }, 5000)
+          //setSuccessMessage('Deleted blog')
+          //setTimeout(() => { setSuccessMessage(null) }, 5000)
+          dispatch({ type: 'REMOVE' })
+          setTimeout(() => dispatch({ type: 'RESET' }), 3000)
           blogService.getAll().then(blogs => setBlogs( blogs ))
         })
     }
@@ -100,8 +105,10 @@ const App = () => {
       blogService
         .update(id, muutettavaBlogi)
         .then(muutettuBlog => {
-          setSuccessMessage('You added a like')
-          setTimeout(() => { setSuccessMessage(null) }, 5000)
+          //setSuccessMessage('You added a like')
+          //setTimeout(() => { setSuccessMessage(null) }, 5000)
+          dispatch({ type: 'LIKE' })
+          setTimeout(() => dispatch({ type: 'RESET' }), 3000)
           blogService.getAll().then(blogs => setBlogs( blogs ))
         })
     })
@@ -112,8 +119,7 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
-      <ErrorNotification message={errorMessage} />
-      <SuccessNotification message={successMessage} />
+      <Notification />
       {user === null ?
         <Togglable buttonLabel='login'>
           <LoginForm

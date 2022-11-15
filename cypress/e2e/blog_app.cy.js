@@ -86,7 +86,7 @@ describe('Blog app', function() {
       cy.get('#url').type('http://blogi')
       cy.get('#create-button').click()
     })
-    
+
     it('a blog can be deleted', function() {
       cy.contains('Tauno blog 1')
       cy.contains('Tauno blog 2')

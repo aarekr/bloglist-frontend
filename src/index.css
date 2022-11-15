@@ -3,7 +3,7 @@ h1 {
     font-style: italic;
 }
   
-.note {
+.blog {
     color: grey;
     padding-top: 5px;
     font-size: 15px;
@@ -21,6 +21,16 @@ h1 {
 
 .success {
     color: green;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.ilmoitus {
+    color: blue;
     background: lightgrey;
     font-size: 20px;
     border-style: solid;
