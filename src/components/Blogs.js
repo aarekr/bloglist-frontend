@@ -1,14 +1,8 @@
 import Togglable from './Togglable'
 import { useNavigate } from 'react-router-dom'
 
-const DataLine = ({ name, lkm }) => {
-  return (
-    <><td>{name}</td><td>{lkm}</td></>
-  )
-}
-
-const Users = ({ user, handleLogout, allUsers }) => {
-  console.log('Users:', allUsers)
+const Blogs = ({ blogs, user, handleLogout }) => {
+  console.log('Blogs:', blogs)
   const navigate = useNavigate()
 
   return (
@@ -21,12 +15,12 @@ const Users = ({ user, handleLogout, allUsers }) => {
         <div>
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
           <div>
-            <h2>Users</h2>
+            <h2>All blogs</h2>
             <table>
               <tbody>
-                <tr><td><b>Name</b></td><td><b>Blogs created</b></td></tr>
-                {allUsers.map(user =>
-                  <tr key={user.username}><DataLine name={user.name} lkm={user.blogs.length} /></tr>
+                <tr><td><b>Blog</b></td><td><b>Author</b></td><td><b>Likes</b></td></tr>
+                {blogs.map(blog =>
+                  <tr key={blog.id}><td>{blog.title}</td><td>{blog.author}</td><td>{blog.likes}</td></tr>
                 )}
               </tbody>
             </table>
@@ -37,4 +31,4 @@ const Users = ({ user, handleLogout, allUsers }) => {
   )
 }
 
-export default Users
+export default Blogs

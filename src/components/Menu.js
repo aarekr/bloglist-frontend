@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Users from './Users'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Home from './Home'
+import Users from './Users'
+import Blogs from './Blogs'
 import Notification from './Notification'
 import { useEffect, useState, useRef } from 'react'
 import blogService from '../services/blogs'
@@ -108,18 +109,25 @@ const Menu = () => {
   }
 
   const blogFormRef = useRef()
+  const padding = { padding: 10 }
 
   return (
     <div>
       <h1>Blogs</h1>
       <Notification />
       <Router>
+        <div>
+          <Link style={padding} to='/'>home</Link>
+          <Link style={padding} to='/blogs'>blogs</Link>
+          <Link style={padding} to='/users'>users</Link>
+        </div>
         <Routes>
           <Route path='/' element={<Home user={user} username={username} password={password}
             setUsername={setUsername} setPassword={setPassword} blogFormRef={blogFormRef} blogs={blogs}
             handleLogin={handleLogin} handleLogout={handleLogout}
             addBlog={addBlog} removeBlog={removeBlog} addLike={addLike} />} />
           <Route path='/users' element={<Users user={user} allUsers={allUsers} handleLogout={handleLogout} />} />
+          <Route path='/blogs' element={<Blogs blogs={blogs} user={user} handleLogout={handleLogout} /> } />
         </Routes>
       </Router>
     </div>
