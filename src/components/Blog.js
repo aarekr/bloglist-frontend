@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, kirjautunut, removeBlog, addLike }) => {
   const [showDetails, setShowDetails] = useState(false)
@@ -13,7 +14,7 @@ const Blog = ({ blog, kirjautunut, removeBlog, addLike }) => {
   if (showDetails === false) {
     return(
       <div>
-        {blog.title}
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
         <button id='view-button' onClick={() => setShowDetails(true)}>view</button>
       </div>
     )

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Home from './Home'
 import Users from './Users'
 import Blogs from './Blogs'
+import OneBlog from './OneBlog'
 import Notification from './Notification'
 import { useEffect, useState, useRef } from 'react'
 import blogService from '../services/blogs'
@@ -128,6 +129,8 @@ const Menu = () => {
             addBlog={addBlog} removeBlog={removeBlog} addLike={addLike} />} />
           <Route path='/users' element={<Users user={user} allUsers={allUsers} handleLogout={handleLogout} />} />
           <Route path='/blogs' element={<Blogs blogs={blogs} user={user} handleLogout={handleLogout} /> } />
+          <Route path='/blogs/:id' element={<OneBlog blogs={blogs} user={user}
+            handleLogout={handleLogout} addLike={addLike} /> } />
         </Routes>
       </Router>
     </div>

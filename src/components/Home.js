@@ -17,7 +17,7 @@ const Home = ({ user, username, password, setUsername, setPassword, blogFormRef,
             handleSubmit={handleLogin}/>
         </Togglable> :
         <div>
-          <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
+          <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <UusiBlogForm createBlog={addBlog} />
           </Togglable><hr />
