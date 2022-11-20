@@ -9,6 +9,7 @@ import blogService from '../services/blogs'
 import userService from '../services/users'
 import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
+import { Navbar, Nav } from 'react-bootstrap'
 
 const Menu = () => {
   const [blogs, setBlogs] = useState([])
@@ -117,11 +118,16 @@ const Menu = () => {
       <h1>Blogs</h1>
       <Notification />
       <Router>
-        <div>
-          <Link style={padding} to='/'>home</Link>
-          <Link style={padding} to='/blogs'>blogs</Link>
-          <Link style={padding} to='/users'>users</Link>
-        </div>
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link href="#" as="span"><Link style={padding} to='/'>home</Link></Nav.Link>
+              <Nav.Link href="#" as="span"><Link style={padding} to='/blogs'>blogs</Link></Nav.Link>
+              <Nav.Link href="#" as="span"><Link style={padding} to='/users'>users</Link></Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
         <Routes>
           <Route path='/' element={<Home user={user} username={username} password={password}
             setUsername={setUsername} setPassword={setPassword} blogFormRef={blogFormRef} blogs={blogs}

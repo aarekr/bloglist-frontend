@@ -1,5 +1,6 @@
 import Togglable from './Togglable'
 import { useNavigate } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const Blogs = ({ blogs, user, handleLogout }) => {
   console.log('Blogs:', blogs)
@@ -16,14 +17,14 @@ const Blogs = ({ blogs, user, handleLogout }) => {
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
           <div>
             <h2>All blogs</h2>
-            <table>
+            <Table striped>
               <tbody>
                 <tr><td><b>Blog</b></td><td><b>Author</b></td><td><b>Likes</b></td></tr>
                 {blogs.map(blog =>
                   <tr key={blog.id}><td>{blog.title}</td><td>{blog.author}</td><td>{blog.likes}</td></tr>
                 )}
               </tbody>
-            </table>
+            </Table>
           </div>
         </div>
       }

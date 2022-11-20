@@ -2,7 +2,7 @@ import Menu from './components/Menu'
 
 const App = () => {
   return (
-    <div>
+    <div className='container'>
       <Menu />
     </div>
   )

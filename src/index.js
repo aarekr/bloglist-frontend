@@ -3,12 +3,10 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-//import { createStore } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import notificationReducer from './reducers/notificationReducer'
 
-//const store = createStore(notificationReducer)
 const store = configureStore({
   reducer: {
     ilmoitus: notificationReducer

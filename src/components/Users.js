@@ -1,5 +1,6 @@
 import Togglable from './Togglable'
 import { useNavigate } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const DataLine = ({ name, lkm }) => {
   return (
@@ -22,14 +23,14 @@ const Users = ({ user, handleLogout, allUsers }) => {
           <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
           <div>
             <h2>Users</h2>
-            <table>
+            <Table striped>
               <tbody>
                 <tr><td><b>Name</b></td><td><b>Blogs created</b></td></tr>
                 {allUsers.map(user =>
                   <tr key={user.username}><DataLine name={user.name} lkm={user.blogs.length} /></tr>
                 )}
               </tbody>
-            </table>
+            </Table>
           </div>
         </div>
       }
